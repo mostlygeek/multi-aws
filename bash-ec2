@@ -1,0 +1,67 @@
+#
+# 
+# this file should be sourced from ~/.bash_profile
+#
+# This sets up ~/.aws for EC2 
+#
+basePath="$HOME/.aws"
+toolsPath="$basePath/cli_tools/ec2-api-tools"
+credPath="$basePath/creds"
+
+if [ ! `echo $PATH | grep "$toolsPath"` ]
+then
+    export PATH="$PATH:$toolsPath/bin"
+fi
+
+export EC2_HOME="$toolsPath"
+export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
+
+# to modify the shell's environment we need to run 
+# in the same environment (shell scripts are child envs)
+
+function aws {
+
+
+    if [ -z $1 ]
+    then
+        available=$(ls -1 $credPath | tr "\n" "|" | sed 's/|$//')
+        echo
+        echo "Usage: aws [$available]"
+        echo
+
+        echo "Example: "
+        echo "> aws `ls -1 $credPath | head -1`"
+        echo
+        ERROR="TRUE"
+    fi
+
+    if [ -z $ERROR ]
+    then
+        credFile="$credPath/$1"
+        if [ ! -f $credFile ]
+        then 
+            echo "ERROR: Environment $1 path ($credFile) does not exist"
+            ERROR="TRUE"
+        fi
+    fi
+
+    if [ -z $ERROR ]
+    then
+        export EC2_ENV=$1
+        echo "Sourcing: $credFile"
+        source $credFile
+        echo $ > "$basePath/last"
+
+        echo ""
+        echo "EC2 Environment"
+        echo "---------------"
+        echo "EC2_ENV          = $EC2_ENV"
+        echo "EC2_ACCESS_KEY   = $EC2_ACCESS_KEY"
+        echo "EC2_SECRET       = `echo $EC2_SECRET | cut -c 1-5`..."
+        echo 
+    fi
+
+
+}
+
+export -f aws
