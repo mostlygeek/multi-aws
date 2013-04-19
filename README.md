@@ -29,5 +29,5 @@ the current environmnent variables for `EC2_ACCESS_KEY` and
 
 <code>
     export AWS_ACCESS_KEY=your access key
-    export AWS_SECRET=your secret
+    export AWS_SECRET_KEY=your secret
 </code>
