@@ -16,8 +16,8 @@ will be set.
 
 ## Installation
 
-* git clone git@github.com:mostlygeek/multi-aws.git ~/.aws
-* mkdir ~/.aws/creds
+* `git clone git@github.com:mostlygeek/multi-aws.git ~/.aws`
+* `mkdir ~/.aws/creds`
 * add: `source $HOME/.aws/bash-ec2` to `.bash_profile`
 * done
 
