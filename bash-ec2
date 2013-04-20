@@ -2,21 +2,37 @@
 # 
 # this file should be sourced from ~/.bash_profile
 #
-# This sets up ~/.aws for EC2 
 #
-basePath="$HOME/.aws"
-toolsPath="$basePath/cli_tools/ec2-api-tools"
+basePath="$HOME/aws"
 credPath="$basePath/creds"
-
-if [ ! `echo $PATH | grep "$toolsPath"` ]
-then
-    export PATH="$PATH:$toolsPath/bin"
-fi
-
-export EC2_HOME="$toolsPath"
 
 # pretty osx specific right now
 export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
+
+ec2_tools="$basePath/cli_tools/ec2-api-tools"
+
+if [ -e $ec2_tools ]; then
+    if [ ! `echo $PATH | grep "$ec2_tools"` ]; then
+        export PATH="$PATH:$ec2_tools/bin"
+    fi
+
+    export EC2_HOME="$ec2_tools"
+fi
+
+# 
+# Handle ELB ... it has very different env. variabls
+# and the way it handles credentials. Thanks AWS. Thanks... 
+#
+elb_tools="$basePath/cli_tools/ElasticLoadBalancing"
+credentialsFile="$basePath/credentialsFile.txt"
+if [ -e $elb_tools ]; then
+    if [ ! `echo $PATH | grep "$elb_tools"` ]; then
+        export PATH="$PATH:$elb_tools/bin"
+    fi
+
+    export AWS_ELB_HOME="$elb_tools"
+    export AWS_CREDENTIAL_FILE=$credentialsFile
+fi
 
 # to modify the shell's environment we need to run 
 # in the same environment (shell scripts are child envs)
@@ -34,9 +50,10 @@ function aws {
         echo
         echo "Current AWS Environment"
         echo "-----------------------"
-        echo "AWS_ENV          = $AWS_ENV"
-        echo "AWS_ACCESS_KEY   = $AWS_ACCESS_KEY"
-        echo "AWS_SECRET_KEY   = `echo $AWS_SECRET_KEY | cut -c 1-5`..."
+        echo "AWS_ENV              = $AWS_ENV"
+        echo "AWS_ACCESS_KEY       = $AWS_ACCESS_KEY"
+        echo "AWS_SECRET_KEY       = `echo $AWS_SECRET_KEY | cut -c 1-5`..."
+        echo "AWS_CREDENTIAL_FILE  = $AWS_CREDENTIAL_FILE"
         echo
         ERROR="TRUE"
     fi
@@ -55,6 +72,10 @@ function aws {
     then
         export AWS_ENV=$1
         source $credFile
+
+        # update the credentials file
+        echo "AWSAccessKeyId=$AWS_ACCESS_KEY" > $credentialsFile
+        echo "AWSSecretKey=$AWS_SECRET_KEY" >> $credentialsFile
 
         echo $1 > "$basePath/last"
     fi

@@ -1,3 +1,5 @@
+.DS_Store
 cli_tools
 creds
 last
+credentialsFile.txt
