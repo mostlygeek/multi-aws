@@ -1,3 +1,9 @@
+# DO NOT USE ANYMORE
+
+Use the latest AWS CLI tools. 
+
+
+----
 # About
 
 This makes it easy to change your AWS/EC2 environment on the command
