@@ -66,7 +66,7 @@ fi
 # sub-process so they can't modify the login shells 
 # environment settings
 
-function aws {
+function multiaws {
     ERROR=
 
     if [ -z $1 ]
@@ -110,7 +110,7 @@ function aws {
     fi
 }
 
-export -f aws
+export -f multiaws
 
 # restore the previous setting
 if [ -f $basePath/last ]; then
