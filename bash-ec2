@@ -3,7 +3,7 @@
 # this file should be sourced from ~/.bash_profile
 #
 #
-basePath="$HOME/aws"
+basePath="$HOME/multiaws"
 credPath="$basePath/creds"
 
 # some newer APIs use the credentials file
@@ -72,10 +72,10 @@ function multiaws {
     if [ -z $1 ]
     then
         available=$(ls -1 $credPath | tr "\n" "|" | sed 's/|$//')
-        echo "Usage: aws [$available]"
+        echo "Usage: multiaws [$available]"
         echo
         echo "Example: "
-        echo "> aws `ls -1 $credPath | head -1`"
+        echo "> multiaws `ls -1 $credPath | head -1`"
         echo
         echo "Current AWS Environment"
         echo "-----------------------"
@@ -114,5 +114,5 @@ export -f multiaws
 
 # restore the previous setting
 if [ -f $basePath/last ]; then
-    aws $(cat $basePath/last)
+    multiaws $(cat $basePath/last)
 fi
