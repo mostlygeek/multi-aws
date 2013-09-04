@@ -1,9 +1,3 @@
-# DO NOT USE ANYMORE
-
-Use the latest AWS CLI tools. 
-
-
-----
 # About
 
 This makes it easy to change your AWS/EC2 environment on the command
@@ -17,8 +11,8 @@ will be set.
 ## Usage
 
 * create a new settings file in the `creds/` dir, like `creds/prod.cred`
-* use `aws prod` to switch to the environment
-* use `aws` to show usage instructions
+* use `multiaws prod` to switch to the environment
+* use `multiaws` to show usage instructions
 
 ## Installation
 
